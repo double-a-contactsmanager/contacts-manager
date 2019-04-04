@@ -8,15 +8,40 @@ public class Main {
      static List<Contacts> contactlist = new ArrayList<>();
 
 
-     public void view(){
+     public static void view(){
          for( Contacts x : contactlist ){
              System.out.println(x.getName());
          }
      }
 
+    public static int searchName(){
+         Scanner input = new Scanner(System.in);
+         String userInput;
+
+        System.out.println("enter user name you are looking for");
+         userInput = input.next();
+        for( Contacts x : contactlist ){
+            if(x.getName().contains(userInput)){
+                System.out.println("user found");
+                int index = x.getName().indexOf(userInput);
+                return index;
+            }else {
+                System.out.println("user is not found");
+                return -1;
+            }
+        }
+
+        return -1;
+    }
+
+    public static void delete(){
+         
+        contactlist.remove(searchName());
+
+    }
 
 
-     public void addContact(){
+     public static void addContact(){
 
          String name,phone;
          Scanner input = new Scanner(System.in);
@@ -32,9 +57,10 @@ public class Main {
 
 
          contactlist.add(newCon);
+         mainMenu();
      }
 
-     public void mainMenu(){
+     public static void mainMenu(){
 
          Scanner input = new Scanner(System.in);
          int choice;
@@ -48,38 +74,29 @@ public class Main {
 
             if (choice == 1){
                view();
+                mainMenu();
             } else if (choice == 2){
                 addContact();
+                mainMenu();
             }else if (choice == 3){
-                System.out.println("contact by name");
+                searchName();
+                mainMenu();
             }else if (choice == 4){
-                System.out.println("delete a contact");
+                delete();
+                mainMenu();
             }else {
-                System.out.println("exit");
+                System.out.println("program ended");
             }
+
 
 
      }
 
 
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-
-        String choice;
-
-        do {
 
 
-
-
-
-
-            System.out.println("do you want to add another?");
-            choice = input.next();
-
-
-
-        }while(choice.equals("y"));
+        mainMenu();
 
 
 
