@@ -1,12 +1,63 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.*;
 
 
 public class Main {
 
      static List<Contacts> contactlist = new ArrayList<>();
 
+     public static void loadFromFile(){
+
+
+         String name,phone;
+         Scanner input = new Scanner(System.in);
+         System.out.println("enter your name");
+
+         name = input.next();
+
+         System.out.println("enter your phone number");
+
+         phone = input.next();
+
+         Contacts newCon = new Contacts(name, phone);
+
+
+        // contactlist.add();
+//         mainMenu();
+
+         List<String> result;
+         String directory = "data";
+         String filename = "contacts.txt";
+
+         Path dataDirectory = Paths.get(directory);
+         Path dataFile = Paths.get(directory,filename);
+
+         try{
+             if (Files.notExists(dataDirectory)){
+                 Files.createDirectories(dataDirectory);
+             }
+             if (!Files.exists(dataFile)){
+                 Files.createFile(dataFile);
+             }
+
+             Files.write(
+                     Paths.get("data","contacts.txt"),
+                     Arrays.asList("name: " + name + "phone: " + phone),
+                     StandardOpenOption.APPEND
+             );
+
+
+
+
+         }catch (IOException ioe){
+             System.out.println(ioe);
+         }
+
+     }
 
      public static void view(){
          for( Contacts x : contactlist ){
@@ -42,7 +93,7 @@ public class Main {
 
 
      public static void addContact(){
-
+//
          String name,phone;
          Scanner input = new Scanner(System.in);
          System.out.println("enter your name");
@@ -76,7 +127,7 @@ public class Main {
                view();
                 mainMenu();
             } else if (choice == 2){
-                addContact();
+                loadFromFile();
                 mainMenu();
             }else if (choice == 3){
                 searchName();
@@ -91,6 +142,7 @@ public class Main {
 
 
      }
+
 
 
     public static void main(String[] args) {
