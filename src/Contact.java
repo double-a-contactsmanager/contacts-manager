@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.lang.String;
 
-public class Contacts {
+public class Contact {
 
     private String name;
 
@@ -10,7 +10,7 @@ public class Contacts {
 
 
 
-    public Contacts(String name, String phone) {
+    public Contact(String name, String phone) {
         this.name = name;
         this.phone = phone;
     }
@@ -23,6 +23,13 @@ public class Contacts {
         return phone;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
 
 }

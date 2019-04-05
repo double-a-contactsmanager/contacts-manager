@@ -8,34 +8,15 @@ import java.util.*;
 
 public class Main {
 
-     static List<Contacts> contactlist = new ArrayList<>();
+     static List<Contact> contactlist = new ArrayList<>();
 
      public static void loadFromFile(){
-
-
-         String name,phone;
-         Scanner input = new Scanner(System.in);
-         System.out.println("enter your name");
-
-         name = input.next();
-
-         System.out.println("enter your phone number");
-
-         phone = input.next();
-
-         Contacts newCon = new Contacts(name, phone);
-
-
-        // contactlist.add();
-//         mainMenu();
-
-         List<String> result;
          String directory = "data";
          String filename = "contacts.txt";
 
          Path dataDirectory = Paths.get(directory);
          Path dataFile = Paths.get(directory,filename);
-
+         List<String> lines;
          try{
              if (Files.notExists(dataDirectory)){
                  Files.createDirectories(dataDirectory);
@@ -44,24 +25,27 @@ public class Main {
                  Files.createFile(dataFile);
              }
 
-             Files.write(
-                     Paths.get("data","contacts.txt"),
-                     Arrays.asList("name: " + name + "phone: " + phone),
-                     StandardOpenOption.APPEND
-             );
+             lines = Files.readAllLines(Paths.get("data", "contacts.txt"));
+//             System.out.println(lines);
 
 
+for (String line : lines){
+    String[] lineParts = line.split("[|]");
+    contactlist.add(new Contact(lineParts[0],lineParts[1]));
 
+}
 
-         }catch (IOException ioe){
-             System.out.println(ioe);
+         }catch (IOException e){
+             System.out.println(e);
          }
 
      }
 
      public static void view(){
-         for( Contacts x : contactlist ){
+         for( Contact x : contactlist ){
              System.out.println(x.getName());
+             System.out.println(x.getPhone());
+
          }
      }
 
@@ -71,7 +55,7 @@ public class Main {
 
         System.out.println("enter user name you are looking for");
          userInput = input.next();
-        for( Contacts x : contactlist ){
+        for( Contact x : contactlist ){
             if(x.getName().contains(userInput)){
                 System.out.println("user found");
                 int index = x.getName().indexOf(userInput);
@@ -93,23 +77,32 @@ public class Main {
 
 
      public static void addContact(){
-//
+
          String name,phone;
          Scanner input = new Scanner(System.in);
          System.out.println("enter your name");
 
-         name = input.next();
+         name = input.next() + " | "; //Pipe delimiter to separate values.
 
          System.out.println("enter your phone number");
 
          phone = input.next();
 
-         Contacts newCon = new Contacts(name, phone);
+         Contact newCon = new Contact(name, phone);
 
 
          contactlist.add(newCon);
          mainMenu();
      }
+
+     public static void saveFile(List<Contact> array){
+
+
+//            Files.write(
+//                    Paths.get("data", "contacts.txt"),
+//                    array,
+//                    StandardOpenOption.WRITE);
+    }
 
      public static void mainMenu(){
 
@@ -127,7 +120,7 @@ public class Main {
                view();
                 mainMenu();
             } else if (choice == 2){
-                loadFromFile();
+                addContact();
                 mainMenu();
             }else if (choice == 3){
                 searchName();
@@ -136,6 +129,7 @@ public class Main {
                 delete();
                 mainMenu();
             }else {
+
                 System.out.println("program ended");
             }
 
@@ -147,7 +141,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-
+loadFromFile();
         mainMenu();
 
 
